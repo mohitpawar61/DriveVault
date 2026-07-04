@@ -1,0 +1,56 @@
+<div class="auth-page">
+  <div class="slip">
+    <div class="slip-header">
+      <span class="mark">DV</span>
+      <div>
+        <h1>DriveVault</h1>
+        <p class="tagline">Every file, accounted for.</p>
+      </div>
+    </div>
+
+    <div class="slip-tabs">
+      <button
+        type="button"
+        [class.active]="mode() === 'login'"
+        (click)="mode.set('login')"
+      >
+        Sign in
+      </button>
+      <button
+        type="button"
+        [class.active]="mode() === 'register'"
+        (click)="mode.set('register')"
+      >
+        Open an account
+      </button>
+    </div>
+
+    <form class="slip-body" (ngSubmit)="submit()" #f="ngForm">
+      <div class="field" *ngIf="mode() === 'register'">
+        <label for="name">Full name</label>
+        <input id="name" name="name" [(ngModel)]="name" required autocomplete="name" />
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" [(ngModel)]="email" required autocomplete="email" />
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" [(ngModel)]="password" required autocomplete="current-password" />
+      </div>
+
+      <p class="error" *ngIf="error()">{{ error() }}</p>
+
+      <button class="btn" type="submit" [disabled]="loading() || f.invalid">
+        {{ loading() ? 'Please wait…' : (mode() === 'login' ? 'Sign in' : 'Create account') }}
+      </button>
+    </form>
+
+    <p class="note">
+      Note: authentication runs on a local mock — no auth service exists in the
+      backend yet, so any email/password combination works.
+    </p>
+  </div>
+</div>

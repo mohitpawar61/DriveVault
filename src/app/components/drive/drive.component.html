@@ -1,0 +1,132 @@
+<div class="drive">
+  <header class="topbar">
+    <div class="brand" (click)="goToRoot()">
+      <span class="mark">DV</span>
+      <span class="brand-name">DriveVault</span>
+    </div>
+
+    <div class="search">
+      <input
+        type="text"
+        placeholder="Search files and folders…"
+        [(ngModel)]="query"
+        (keyup.enter)="runSearch()"
+      />
+      <button class="btn-secondary" (click)="runSearch()">Search</button>
+      <button class="btn-secondary" *ngIf="searchResults()" (click)="clearSearch()">Clear</button>
+    </div>
+
+    <button class="btn-secondary" (click)="logout()">Sign out</button>
+  </header>
+
+  <div class="toolbar">
+    <nav class="breadcrumbs" *ngIf="!searchResults()">
+      <button class="crumb" (click)="goToRoot()">Vault</button>
+      <ng-container *ngFor="let f of trail()">
+        <span class="sep">/</span>
+        <button class="crumb" (click)="goToBreadcrumb(f)">{{ f.name }}</button>
+      </ng-container>
+    </nav>
+    <h2 *ngIf="searchResults()">Results for “{{ query }}”</h2>
+
+    <div class="actions" *ngIf="!searchResults()">
+      <button class="btn-secondary" (click)="showNewFolder.set(true)">+ New folder</button>
+      <button class="btn" (click)="showUpload.set(true)" [disabled]="isRoot()">
+        Upload file
+      </button>
+    </div>
+  </div>
+
+  <p class="hint" *ngIf="isRoot() && !searchResults()">
+    Open a folder to upload files — files are always stored inside a folder.
+  </p>
+  <p class="error-banner" *ngIf="errorMsg()">{{ errorMsg() }}</p>
+
+  <!-- SEARCH RESULTS -->
+  <section class="ledger" *ngIf="searchResults() as res">
+    <div class="ledger-head">
+      <span class="col-serial">Ref #</span>
+      <span class="col-name">Name</span>
+      <span class="col-meta">Type</span>
+      <span class="col-actions"></span>
+    </div>
+
+    <div class="ledger-row" *ngFor="let f of res.folders">
+      <span class="col-serial mono">{{ serial(f['id']) }}</span>
+      <span class="col-name">📁 {{ f['name'] }}</span>
+      <span class="col-meta mono">folder</span>
+      <span class="col-actions"></span>
+    </div>
+
+    <div class="ledger-row" *ngFor="let f of res.files">
+      <span class="col-serial mono">{{ serial(f['id']) }}</span>
+      <span class="col-name">📄 {{ f['name'] }}</span>
+      <span class="col-meta mono">file</span>
+      <span class="col-actions"></span>
+    </div>
+
+    <p class="empty" *ngIf="res.folders.length === 0 && res.files.length === 0">
+      No entries match that search.
+    </p>
+  </section>
+
+  <!-- LEDGER: folders + files in current location -->
+  <section class="ledger" *ngIf="!searchResults()">
+    <div class="ledger-head">
+      <span class="col-serial">Ref #</span>
+      <span class="col-name">Name</span>
+      <span class="col-meta">Size</span>
+      <span class="col-actions">Actions</span>
+    </div>
+
+    <div
+      class="ledger-row clickable"
+      *ngFor="let folder of childFolders()"
+      (click)="openFolder(folder)"
+    >
+      <span class="col-serial mono">{{ serial(folder.id) }}</span>
+      <span class="col-name">📁 {{ folder.name }}</span>
+      <span class="col-meta mono">—</span>
+      <span class="col-actions">
+        <button class="icon-btn" (click)="openShare('folder', folder.id, folder.name, $event)">Share</button>
+        <button class="icon-btn danger" (click)="deleteFolder(folder, $event)">Delete</button>
+      </span>
+    </div>
+
+    <div class="ledger-row" *ngFor="let file of files()">
+      <span class="col-serial mono">{{ serial(file.id) }}</span>
+      <span class="col-name">📄 {{ file.name }}</span>
+      <span class="col-meta mono">{{ formatSize(file.size) }}</span>
+      <span class="col-actions">
+        <button class="icon-btn" (click)="downloadFile(file, $event)">Download</button>
+        <button class="icon-btn" (click)="openShare('file', file.id, file.name, $event)">Share</button>
+        <button class="icon-btn danger" (click)="deleteFile(file, $event)">Delete</button>
+      </span>
+    </div>
+
+    <p class="empty" *ngIf="!loading() && childFolders().length === 0 && files().length === 0">
+      This folder is empty. Create a folder or upload a file to get started.
+    </p>
+    <p class="empty" *ngIf="loading()">Loading…</p>
+  </section>
+
+  <app-upload-dialog
+    *ngIf="showUpload()"
+    [folderId]="currentFolderId()!"
+    (closed)="showUpload.set(false)"
+    (uploaded)="onFileUploaded()"
+  ></app-upload-dialog>
+
+  <app-new-folder-dialog
+    *ngIf="showNewFolder()"
+    [parentId]="currentFolderId()"
+    (closed)="showNewFolder.set(false)"
+    (created)="onFolderCreated()"
+  ></app-new-folder-dialog>
+
+  <app-share-dialog
+    *ngIf="shareTarget() as target"
+    [target]="target"
+    (closed)="shareTarget.set(null)"
+  ></app-share-dialog>
+</div>

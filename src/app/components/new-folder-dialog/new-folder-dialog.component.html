@@ -1,0 +1,29 @@
+<div class="modal-overlay" (click)="closed.emit()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>New folder</h3>
+      <button class="modal-close" (click)="closed.emit()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="field">
+        <label for="folderName">Folder name</label>
+        <input
+          id="folderName"
+          [(ngModel)]="name"
+          (keyup.enter)="submit()"
+          autofocus
+          placeholder="e.g. Tax Documents"
+        />
+      </div>
+      <p class="modal-error" *ngIf="error()">{{ error() }}</p>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closed.emit()">Cancel</button>
+      <button class="btn" (click)="submit()" [disabled]="creating()">
+        {{ creating() ? 'Creating…' : 'Create folder' }}
+      </button>
+    </div>
+  </div>
+</div>

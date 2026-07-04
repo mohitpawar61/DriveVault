@@ -1,0 +1,29 @@
+<div class="modal-overlay" (click)="closed.emit()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Upload file</h3>
+      <button class="modal-close" (click)="closed.emit()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="file-drop">
+        <span>Choose a file from your computer</span>
+        <input type="file" (change)="onFileSelected($event)" />
+      </div>
+
+      <div class="field" *ngIf="selectedFile">
+        <label for="displayName">Name</label>
+        <input id="displayName" [(ngModel)]="displayName" />
+      </div>
+
+      <p class="modal-error" *ngIf="error()">{{ error() }}</p>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closed.emit()">Cancel</button>
+      <button class="btn" (click)="submit()" [disabled]="uploading()">
+        {{ uploading() ? 'Uploading…' : 'Upload' }}
+      </button>
+    </div>
+  </div>
+</div>

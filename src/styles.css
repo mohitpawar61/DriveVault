@@ -1,0 +1,189 @@
+/* ============================================================
+   DriveVault — Design Tokens
+   Concept: a bank vault's deposit ledger. Every file and folder
+   is a stamped entry in the book: a serial, a name, a weight.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Color */
+  --ink:        #101826;   /* header / dark surfaces */
+  --ink-soft:   #1B2536;
+  --paper:      #F3F0E7;   /* page background */
+  --paper-raised: #FFFFFF; /* cards / rows */
+  --rule:       #D9D3C2;   /* ledger lines, borders */
+  --rule-soft:  #E8E3D6;
+  --vault:      #1F6F5C;   /* primary accent */
+  --vault-dark: #175646;
+  --stamp:      #B5652B;   /* secondary accent, "stamped" badges */
+  --danger:     #A23B2E;
+  --text:       #1B2230;
+  --text-muted: #6B7280;
+  --text-inverse: #F3F0E7;
+
+  /* Type */
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  /* Layout */
+  --radius: 3px;
+  --shadow-row: 0 1px 0 var(--rule);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--paper);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; margin: 0; }
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+a { color: inherit; }
+
+::selection { background: var(--vault); color: var(--text-inverse); }
+
+/* Focus visibility — accessibility floor */
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--vault);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+.btn {
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--text-inverse);
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: background 120ms ease, transform 80ms ease;
+}
+.btn:hover { background: var(--vault-dark); border-color: var(--vault-dark); }
+.btn:active { transform: translateY(1px); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--rule);
+}
+.btn-secondary:hover { border-color: var(--ink); background: var(--paper-raised); }
+
+.btn-danger {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+.btn-danger:hover { background: var(--danger); color: var(--text-inverse); }
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.field label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.field input {
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 10px 12px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper-raised);
+  color: var(--text);
+}
+.field input:focus { border-color: var(--vault); }
+
+/* Shared modal shell, used by upload / new-folder / share dialogs */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 24, 38, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+}
+
+.modal {
+  width: 100%;
+  max-width: 420px;
+  background: var(--paper-raised);
+  border-radius: var(--radius);
+  border: 1px solid var(--rule);
+  box-shadow: 0 24px 60px rgba(16, 24, 38, 0.25);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.modal-header h3 { font-size: 17px; }
+
+.modal-close {
+  border: none;
+  background: none;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--text-muted);
+  padding: 4px;
+}
+.modal-close:hover { color: var(--text); }
+
+.modal-body { padding: 22px; }
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 22px;
+  border-top: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+.modal-error {
+  color: var(--danger);
+  font-size: 13px;
+  margin: -4px 0 14px;
+}
+
+.file-drop {
+  border: 1px dashed var(--rule);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.file-drop input[type="file"] { margin-top: 10px; }

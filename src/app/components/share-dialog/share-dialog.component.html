@@ -1,0 +1,35 @@
+<div class="modal-overlay" (click)="closed.emit()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Share "{{ target.name }}"</h3>
+      <button class="modal-close" (click)="closed.emit()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="permission-row">
+        <label>
+          <input type="radio" name="perm" value="view" [checked]="permission() === 'view'" (change)="permission.set('view')" />
+          Can view
+        </label>
+        <label>
+          <input type="radio" name="perm" value="edit" [checked]="permission() === 'edit'" (change)="permission.set('edit')" />
+          Can edit
+        </label>
+      </div>
+
+      <div class="link-row">
+        <input type="text" [value]="link()" readonly />
+        <button class="btn-secondary" (click)="copy()">{{ copied() ? 'Copied' : 'Copy' }}</button>
+      </div>
+
+      <p class="mock-note">
+        Sharing is simulated — there's no sharing microservice in the backend yet,
+        so this link isn't functional.
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn" (click)="closed.emit()">Done</button>
+    </div>
+  </div>
+</div>
