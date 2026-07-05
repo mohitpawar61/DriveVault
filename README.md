@@ -1,4 +1,4 @@
-# DriveVault Frontend
+# DriveVault Frontend & Backend
 
 Angular frontend for the DriveVault microservices (`GoogleDrive`, `folder-service`, `Search-service`).
 
