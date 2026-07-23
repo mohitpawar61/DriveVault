@@ -13,7 +13,8 @@
 [![Maven](https://img.shields.io/badge/Build-Maven-C71A36?logo=apachemaven&logoColor=white)](https://maven.apache.org)
 [![H2](https://img.shields.io/badge/Database-H2%20(in--memory)-1B6AC6)](https://www.h2database.com)
 [![OpenFeign](https://img.shields.io/badge/Spring%20Cloud-OpenFeign-6DB33F?logo=spring&logoColor=white)](https://spring.io/projects/spring-cloud-openfeign)
-[![License](https://img.shields.io/badge/License-Unspecified-lightgrey)](#license)
+![License](https://img.shields.io/badge/License-Educational-blue)
+![Status](https://img.shields.io/badge/Status-Active%20Development-yellow)
 
 **[Repository](https://github.com/mohitpawar61/DriveVault) · [Architecture](#-system-overview) · [API Reference](#-api-documentation) · [Installation](#-installation-guide) · [Interview Guide](#-interview-guide)**
 
