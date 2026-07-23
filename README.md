@@ -449,35 +449,32 @@ graph TB
 ## 🔬 Low-Level Architecture
 
 ```mermaid
-graph LR
+flowchart LR
     subgraph GoogleDrive["GoogleDrive Service (com.cfs.googledrive)"]
         direction TB
-        GDC[FileController<br/>@RestController]
-        GDR[FileRepository<br/>extends JpaRepository]
-        GDE[FileEntity<br/>@Entity table=files]
-        GDCfg[Config<br/>CORS WebMvcConfigurer]
+        GDC["FileController<br/>@RestController"]
+        GDR["FileRepository<br/>extends JpaRepository"]
+        GDE["FileEntity<br/>@Entity table=files"]
+        GDCfg["Config<br/>CORS WebMvcConfigurer"]
         GDC --> GDR --> GDE
     end
-
     subgraph FolderService["folder-service (com.storage.folderservice)"]
         direction TB
-        FSC[FileController<br/>@RestController]
-        FSR[FolderRepository<br/>extends JpaRepository]
-        FSE[FolderEntity<br/>@Entity table=folders]
-        FSCfg[config<br/>CORS WebMvcConfigurer]
+        FSC["FileController<br/>@RestController"]
+        FSR["FolderRepository<br/>extends JpaRepository"]
+        FSE["FolderEntity<br/>@Entity table=folders"]
+        FSCfg["config<br/>CORS WebMvcConfigurer"]
         FSC --> FSR --> FSE
     end
-
     subgraph SearchService["Search-service (com.storage.searchservice)"]
         direction TB
-        SSC[SearchController<br/>@RestController]
-        SFC[FileSearchClient<br/>@FeignClient]
-        SFOC[FolderSearchClient<br/>@FeignClient]
-        SCfg[Config<br/>CORS + Retryer.NEVER_RETRY]
+        SSC["SearchController<br/>@RestController"]
+        SFC["FileSearchClient<br/>@FeignClient"]
+        SFOC["FolderSearchClient<br/>@FeignClient"]
+        SCfg["Config<br/>CORS + Retryer.NEVER_RETRY"]
         SSC --> SFC
         SSC --> SFOC
     end
-
     SFC -.HTTP GET.-> GDC
     SFOC -.HTTP GET.-> FSC
 ```
